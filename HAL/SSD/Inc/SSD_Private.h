@@ -1,12 +1,27 @@
 /*
- * SSD_Private.h
- *
- *  Created on: May 12, 2023
- *      Author: mhmd wael
+ *@file		:	SSD_Private.h
+ *@author	: 	Mohamed Wael
+ *@brief	:	Main Private file for SSD
  */
+
 
 #ifndef HAL_SSD_INC_SSD_PRIVATE_H_
 #define HAL_SSD_INC_SSD_PRIVATE_H_
+
+/*************************************************************
+ * Static Functions Prototypes
+ ************************************************************/
+static void DisplayZero(void);
+static void DisplayOne(void);
+static void DisplayTwo(void);
+static void DisplayThree(void);
+static void DisplayFour(void);
+static void DisplayFive(void);
+static void DisplaySix(void);
+static void DisplaySeven(void);
+static void DisplayEight(void);
+static void DisplayNine(void);
+
 
 #define zero     (0x3F)
 #define one      (0x06)

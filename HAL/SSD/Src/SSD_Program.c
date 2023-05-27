@@ -1,29 +1,22 @@
 /*
- * SSD_Program.c
- *
- *  Created on: May 12, 2023
- *      Author: mhmd wael
+ *@file		:	SSD_Program.c
+ *@author	: 	Mohamed Wael
+ *@brief	:	Main Program for Seven Segment Display
  */
 
+
+/*************************************************************
+ * Required Includes
+ ************************************************************/
 #include <stdint.h>
 #include "../../../Inc/ErrTypes.h"
 #include "../../../MCAL/GPIO/Inc/GPIO_Interface.h"
 #include "../../../MCAL/SYSTICK/Inc/SYSTICK_Interface.h"
 #include "../Inc/SSD_Interface.h"
 
-
-
-static void DisplayZero(void);
-static void DisplayOne(void);
-static void DisplayTwo(void);
-static void DisplayThree(void);
-static void DisplayFour(void);
-static void DisplayFive(void);
-static void DisplaySix(void);
-static void DisplaySeven(void);
-static void DisplayEight(void);
-static void DisplayNine(void);
-
+/*************************************************************
+ * Static Array of Pointers to functions initialized with the previous static functions
+ ************************************************************/
 static  void (* DisplayNum[10])(void) = {
 		&DisplayZero,&DisplayOne,&DisplayTwo,&DisplayThree,&DisplayFour,&DisplayFive,&DisplaySix,
 		&DisplaySeven,&DisplayEight,&DisplayNine
@@ -44,6 +37,13 @@ static  void (* DisplayNum[10])(void) = {
  * 							|					|
  * 							 -------------------
  * 									D
+ */
+
+/***********************************
+ * @function 		:	SSD1_voidInit
+ * @brief			:	Initialization for SSD 1
+ * @parameter[in]	:	void
+ * @retval			:	void
  */
 void SSD1_voidInit(void)
 {
@@ -117,7 +117,12 @@ void SSD1_voidInit(void)
 	GPIO_u8PinInit(&DOT);
 
 }
-
+/***********************************
+ * @function 		:	SSD2_voidInit
+ * @brief			:	Initialization for SSD 2
+ * @parameter[in]	:	void
+ * @retval			:	void
+ */
 void SSD2_voidInit(void)
 {
 	PinConfig_t COM2 ={
@@ -189,7 +194,12 @@ void SSD2_voidInit(void)
 	GPIO_u8PinInit(&G);
 	GPIO_u8PinInit(&DOT);
 }
-
+/***********************************
+ * @function 		:	SSD3_voidInit
+ * @brief			:	Initialization for SSD 3
+ * @parameter[in]	:	void
+ * @retval			:	void
+ */
 void SSD3_voidInit(void)
 {
 	PinConfig_t COM3 ={
@@ -262,7 +272,12 @@ void SSD3_voidInit(void)
 	GPIO_u8PinInit(&G);
 	GPIO_u8PinInit(&DOT);
 }
-
+/***********************************
+ * @function 		:	SSD_voidInitMultiblexing
+ * @brief			:	Initialization for All 3 SSDs to work in multiblexing way
+ * @parameter[in]	:	void
+ * @retval			:	void
+ */
 void SSD_voidInitMultiblexing(void)
 {
 	PinConfig_t COM1 ={
@@ -348,7 +363,12 @@ void SSD_voidInitMultiblexing(void)
 	GPIO_u8PinInit(&G);
 	GPIO_u8PinInit(&DOT);
 }
-
+/***********************************
+ * @function 		:	SSD1_voidDisplayNumber
+ * @brief			:	Function to display number on SS 1
+ * @parameter[in]	:	uint8_t Number
+ * @retval			:	Error State
+ */
 uint8_t SSD1_voidDisplayNumber(uint8_t Number)
 {
 	uint8_t Local_u8ErrorState=OK;
@@ -363,7 +383,12 @@ uint8_t SSD1_voidDisplayNumber(uint8_t Number)
 	}
 	return Local_u8ErrorState;
 }
-
+/***********************************
+ * @function 		:	SSD2_voidDisplayNumber
+ * @brief			:	Function to display number on SS 2
+ * @parameter[in]	:	uint8_t Number
+ * @retval			:	Error State
+ */
 uint8_t SSD2_voidDisplayNumber(uint8_t Number)
 {
 	uint8_t Local_u8ErrorState=OK;
@@ -379,7 +404,12 @@ uint8_t SSD2_voidDisplayNumber(uint8_t Number)
 	return Local_u8ErrorState;
 }
 
-
+/***********************************
+ * @function 		:	SSD3_voidDisplayNumber
+ * @brief			:	Function to display number on SS 3
+ * @parameter[in]	:	uint8_t Number
+ * @retval			:	Error State
+ */
 uint8_t SSD3_voidDisplayNumber(uint8_t Number)
 {
 	uint8_t Local_u8ErrorState=OK;
@@ -394,7 +424,12 @@ uint8_t SSD3_voidDisplayNumber(uint8_t Number)
 	}
 	return Local_u8ErrorState;
 }
-
+/***********************************
+ * @function 		:	SSDMUX_VoidDisplayNumber
+ * @brief			:	Display Number on 3 Multiblexed SSDs
+ * @parameter[in]	:	uint16_t Number
+ * @retval			:	Error State
+ */
 uint8_t SSDMUX_VoidDisplayNumber(uint16_t Number)
 {
 	uint8_t	Local_u8ErrorState=OK;
@@ -442,6 +477,7 @@ uint8_t SSDMUX_VoidDisplayNumber(uint16_t Number)
 
 /************************************************
  *		static Functions (Needed only in this file) definitions
+ *		Those Functions used to control SSD (Display numbers)
  ************************************************/
 static void DisplayZero(void)
 {

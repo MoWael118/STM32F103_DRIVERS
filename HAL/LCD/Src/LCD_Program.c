@@ -1,9 +1,9 @@
 /*
- * LCD_Program.c
- *
- *  Created on: May 13, 2023
- *      Author: mhmd wael
+ *@file		:	LCD_Program.c
+ *@author	: 	Mohamed Wael
+ *@brief	:	Main Program for LCD
  */
+
 #include <stdint.h>
 #include "../../../Inc/ErrTypes.h"
 #include "../../../Inc/BitMath.h"
@@ -15,12 +15,22 @@
 
 static GPIO_REG_t* LCD_PORT = GPIOB;
 
+
+/***********************************
+ * @function 		:	LCD_voidSendCommand
+ * @brief			:	Send Command to LCD
+ * @parameter[in]	:	uint8_t Command
+ * @retval			:	void
+ */
 void LCD_voidSendCommand(uint8_t Command)
 {
-	uint8_t Command_Reversed =0;
+	uint8_t Command_Reversed =0;      /*To hold reversed value of the command*/
 	uint8_t Counter =0;
-	uint32_t ODR_Value=0;
-	uint8_t Bit=0;
+	uint32_t ODR_Value=0;             /*To hold ODR Value to assign it in one instruction*/
+	uint8_t Bit=0;                    /*to Check on BIT*/
+
+	/*Reversing the counter BITS to make it sustainable to blue bill */
+
 	for (Counter=0;Counter<8;Counter++)
 	{
 		Bit = GET_BIT(Command,Counter);
@@ -66,12 +76,20 @@ void LCD_voidSendCommand(uint8_t Command)
 
 }
 
+
+/***********************************
+ * @function 		:	LCD_voidSendData
+ * @brief			:	Send Data to LCD
+ * @parameter[in]	:	uint8_t Data
+ * @retval			:	void
+ */
 void LCD_voidSendData(uint8_t Data)
 {
-	uint8_t Command_Reversed =0;
+	uint8_t Command_Reversed =0;	/*To hold reversed value of the command*/
 	uint8_t Counter =0;
-	uint32_t ODR_Value=0;
-	uint8_t Bit=0;
+	uint32_t ODR_Value=0;			/*To hold ODR Value to assign it in one instruction*/
+	uint8_t Bit=0;					/*to Check on BIT*/
+
 	/*Reversing the counter to make it sustainable to blue bill */
 	for (Counter=0;Counter<8;Counter++)
 	{
@@ -117,6 +135,14 @@ void LCD_voidSendData(uint8_t Data)
 }
 
 
+/***********************************
+ * @function 		:	LCD_voidInit
+ * @brief			:	Initialization for LCD
+ * @parameter[in]	:	void
+ * @retval			:	void
+ * @warning 		:	- This function will work properly with BLUEBILL Kit.
+ *						- This Function initializes LCD at 4BIT mode
+ */
 void LCD_voidInit(void)
 {
 	/*Enable System tick and configure it*/
@@ -126,10 +152,14 @@ void LCD_voidInit(void)
 				.SYSTICK_State = SYSTICK_ENABLED
 		};
 		SYSTICK_u8SetConfigs(&Sysconfig);
+
+
 	/*Enable GPIO Clock*/
 	RCC_Set_APB2Peripheral_CLK(IOPA, ENABLED);
 	RCC_Set_APB2Peripheral_CLK(IOPB, ENABLED);
-	/*Initialize LCD pins as output push pull*/
+
+
+	/*Initialize LCD pins Array of structures with each pin configurations*/
 	PinConfig_t LCD_Pins[6]={
 
 			{ .Port_Num=LCD_CTRL_PORT, .Pin_Num=LCD_PIN_EN 	  , .Mode= OUTPUT_MSPEED,.Output_Type=GP_PUSH_PULL}
@@ -141,6 +171,7 @@ void LCD_voidInit(void)
 
 	};
 	uint8_t Counter=0;
+	/*Initialize LCD Pins*/
 	for(Counter=0;Counter<6;Counter++)
 	{
 		GPIO_u8PinInit(&LCD_Pins[Counter]);
@@ -156,12 +187,20 @@ void LCD_voidInit(void)
 	LCD_voidSendCommand(0x01);	/* Clear display screen */
 }
 
+/***********************************
+ * @function 		:	LCD_u8SendString
+ * @brief			:	Send String to LCD
+ * @parameter[in]	:	const char * String
+ * @retval			:	uint8_t ErrorState
+ */
 uint8_t LCD_u8SendString(const char * String)
 {
 	uint8_t Local_u8ErrorState = OK;
 	uint8_t	Counter=0;
+	/*Check The string if available*/
 	if (String != NULL)
 	{
+		/*Loop on String until it finishes*/
 		while (String[Counter] != '\0')
 		{
 			/*If first line ended Skip the hidden blocks until u reach the second line blocks*/
@@ -172,14 +211,29 @@ uint8_t LCD_u8SendString(const char * String)
 					LCD_voidSendData(' ');
 				}
 			}
+			/*Display the current letter of the string*/
 			LCD_voidSendData(String[Counter]);
+			/*Move to the next letter*/
 			Counter++;
 		}
 
 	}
+	/*If String isn't available or not passed*/
 	else {
+		/*define a Null Pointer Error*/
 		Local_u8ErrorState = Null_Pointer;
 	}
 	return Local_u8ErrorState;
 }
 
+
+/***********************************
+ * @function 		:	LCD_u8SendNumber
+ * @brief			:	Send Number to LCD
+ * @parameter[in]	:	uint32_t Number
+ * @retval			:	uint8_t ErrorState
+ */
+uint8_t LCD_u8SendNumber(uint32_t Number)
+{
+
+}

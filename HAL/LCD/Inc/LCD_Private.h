@@ -1,8 +1,7 @@
 /*
- * LCD_Private.h
- *
- *  Created on: May 13, 2023
- *      Author: mhmd wael
+ *@file		:	LCD_Private.h
+ *@author	: 	Mohamed Wael
+ *@brief	:	Main Private file for LCD
  */
 
 #ifndef HAL_LCD_INC_LCD_PRIVATE_H_
